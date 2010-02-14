@@ -62,3 +62,11 @@ def deal(deck):
     tableau['stock'] = deck
     turn_up(tableau)
     return tableau
+
+if __name__ == '__main__':
+    from random import shuffle
+    from pprint import pprint as pp
+    deck = make_deck()
+    shuffle(deck)
+    tab = deal(deck)
+    pp(tab)
