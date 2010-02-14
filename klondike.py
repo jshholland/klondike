@@ -2,6 +2,8 @@
 # A program to simulate the well-known game of Klondike (or Patience, or
 # Solitaire, depending on your nationality
 
+import copy
+
 ranks = ("A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K")
 suits = ("C", "D", "S", "H")
 
@@ -34,3 +36,21 @@ class Card(object):
 
 def make_deck(face_up=False):
     return [Card(rank, suit, face_up) for suit in suits for rank in ranks]
+
+def deal(deck):
+    deck = copy.deepcopy(deck)
+    tableau = {}
+    for suit in suits:
+        tableau[suit] = []
+    for pile_num in range(7):
+        tableau[pile_num] = []
+    tableau['stock'] = []
+    tableau['waste'] = []
+
+    start = 0
+    while start < 7:
+        for pile in range(start, 7):
+            tableau[pile].append(deck.pop())
+        start += 1
+    tableau['stock'] = deck
+    return tableau
