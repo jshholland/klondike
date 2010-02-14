@@ -37,6 +37,13 @@ class Card(object):
 def make_deck(face_up=False):
     return [Card(rank, suit, face_up) for suit in suits for rank in ranks]
 
+def turn_up(tableau):
+    for pile in range(7) + ['waste']:
+        try:
+            tableau[pile][-1].face_up = True
+        except IndexError:
+            pass
+
 def deal(deck):
     deck = copy.deepcopy(deck)
     tableau = {}
@@ -53,4 +60,5 @@ def deal(deck):
             tableau[pile].append(deck.pop())
         start += 1
     tableau['stock'] = deck
+    turn_up(tableau)
     return tableau
