@@ -109,6 +109,19 @@ class Tableau(object):
         if self.avail:
             yield self.avail[-1]
 
+    def deal_stock(self, num=3):
+        cards = []
+        for i in range(num):
+            card = self.stock.deal_card()
+        self.avail.extend(cards)
+
+    def move_to_foundation(self, card):
+        for pile in self.pile:
+            if card == pile[-1]:
+                del pile[-1]
+                break
+        self.foundation[card.suit].append(card)
+        self.turn_up()
 
 if __name__ == '__main__':
     tab = Tableau(Deck())
