@@ -13,11 +13,13 @@ class Card(object):
         self.suit = suit
         self.face_up = face_up
 
-    def __repr__(self):
+    def __str__(self):
         if self.face_up:
             return self.rank + self.suit
         else:
             return (self.rank + self.suit).lower()
+
+    __repr__ = __str__
 
     rank_trans = dict((v, i) for (i, v) in enumerate(ranks))
     def __cmp__(self, other):
@@ -40,8 +42,10 @@ class Deck(object):
         if shuffled:
             self.shuffle()
 
-    def __repr__(self):
+    def __str__(self):
         return ', '.join(str(card) for card in self.data)
+
+    __repr__ = __str__
 
     def __len__(self):
         return len(self.data)
