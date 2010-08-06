@@ -108,9 +108,6 @@ class Tableau(object):
                 yield pile[-1]
         if self.avail:
             yield self.avail[-1]
-        for suit in self.foundation:
-            if self.foundation[suit]:
-                yield foundation[suit][-1]
 
 
 if __name__ == '__main__':
