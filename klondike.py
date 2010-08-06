@@ -110,10 +110,8 @@ class Tableau(object):
             yield self.avail[-1]
 
     def deal_stock(self, num=3):
-        cards = []
         for i in range(num):
-            card = self.stock.deal_card()
-        self.avail.extend(cards)
+            self.avail.append(self.stock.pop())
 
     def move_to_foundation(self, card):
         for pile in self.pile:
