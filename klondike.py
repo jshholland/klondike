@@ -67,8 +67,34 @@ class Deck(object):
     def shuffle(self):
         random.shuffle(self.data)
 
+class Tableau(object):
+    def __init__(self, deck, num_piles=7):
+        self.waste = []
+        self.stock = []
+        self.avail = []
+        self.foundation = {}
+        self.pile = [[] for num in range(num_piles)]
+        for suit in suits:
+            self.foundation[suit] = []
+
+        iteration = num_piles
+        while iteration:
+            for num in range(iteration):
+                self.pile[num].append(deck.deal_card())
+            iteration -= 1
+        self.stock = list(deck)
+
+    def __str__(self):
+        return '\n'.join(["Stock (%d card(s)): %s" % (len(self.stock), self.stock),
+                          "Face-up (%d card(s)): %s" % (len(self.avail), self.avail)] +
+                         ["%s (%d card(s)): %s" % (suit, len(self.foundation[suit]), self.foundation[suit])
+                             for suit in suits] +
+                         ["Pile %d (%d card(s)): %s" % (num, len(pile), pile) for num, pile in
+                              enumerate(self.pile)])
+
+    __repr__ = __str__
+
 
 if __name__ == '__main__':
-    from pprint import pprint as pp
-    deck = Deck()
-    pp(deck)
+    tab = Tableau(Deck())
+    print tab
