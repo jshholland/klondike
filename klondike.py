@@ -123,6 +123,23 @@ class Tableau(object):
         self.foundation[card.suit].append(card)
         self.turn_up()
 
+def solve(tableau):
+    while True:
+        for card in tableau.playable():
+            if card.rank == 'A':
+                tableau.move_to_foundation(card)
+                print tableau
+                break
+            foundation = tableau.foundation[card.suit]
+            if foundation and card.follows(foundation[-1]):
+                tableau.move_to_foundation(card)
+                print tableau
+                break
+        else:
+            print "Gave up!"
+            break
+
 if __name__ == '__main__':
     tab = Tableau(Deck())
     print tab
+    solve(tab)
