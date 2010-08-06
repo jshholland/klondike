@@ -38,7 +38,7 @@ class Card(object):
 
 class Deck(object):
     def __init__(self, shuffled=True):
-        self.data = [Card(rank, suit) for suit in suits for rank in ranks]
+        self.data = [Card(rank, suit, False) for suit in suits for rank in ranks]
         if shuffled:
             self.shuffle()
 
@@ -59,9 +59,9 @@ class Deck(object):
     def __contains__(self, item):
         return item in self.data
 
-    def deal_card(self):
+    def deal_card(self, face_up=True):
         card = self.data.pop()
-        card.face_up = True
+        card.face_up = face_up
         return card
 
     def shuffle(self):
@@ -80,9 +80,10 @@ class Tableau(object):
         iteration = num_piles
         while iteration:
             for num in range(iteration):
-                self.pile[num].append(deck.deal_card())
+                self.pile[num].append(deck.deal_card(False))
             iteration -= 1
         self.stock = list(deck)
+        self.turn_up()
 
     def __str__(self):
         return '\n'.join(["Stock (%d card(s)): %s" % (len(self.stock), self.stock),
@@ -93,6 +94,23 @@ class Tableau(object):
                               enumerate(self.pile)])
 
     __repr__ = __str__
+
+    def turn_up(self):
+        for card in self.avail:
+            card.face_up = True
+
+        for card in self.playable():
+            card.face_up = True
+
+    def playable(self):
+        for pile in self.pile:
+            if pile:
+                yield pile[-1]
+        if self.avail:
+            yield self.avail[-1]
+        for suit in self.foundation:
+            if self.foundation[suit]:
+                yield foundation[suit][-1]
 
 
 if __name__ == '__main__':
