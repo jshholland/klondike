@@ -124,12 +124,12 @@ class Tableau(object):
 def solve(tableau):
     while True:
         for card in tableau.playable():
-            if card.rank == 'A':
+            foundation = tableau.foundation[card.suit]
+            if foundation and card.follows(foundation[-1]):
                 tableau.move_to_foundation(card)
                 print tableau
                 break
-            foundation = tableau.foundation[card.suit]
-            if foundation and card.follows(foundation[-1]):
+            if not foundation and card.rank == 'A':
                 tableau.move_to_foundation(card)
                 print tableau
                 break
