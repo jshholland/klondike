@@ -115,6 +115,14 @@ class Tableau(object):
             card.face_up = True
             self.avail.append(card)
 
+    def replace_stock(self):
+        if self.stock:
+            return
+        self.stock = list(reversed(self.avail))
+        self.avail[:] = []
+        for card in self.stock:
+            card.face_up = False
+
     def move_to_foundation(self, card):
         for pile in self.pile:
             if pile and card == pile[-1]:
@@ -123,23 +131,38 @@ class Tableau(object):
         self.foundation[card.suit].append(card)
         self.turn_up()
 
-def solve(tableau):
+def solve(tableau, max_goes=5):
+    goes_since_moving = 0
     while True:
         for card in tableau.playable():
             foundation = tableau.foundation[card.suit]
             if foundation and card.follows(foundation[-1]):
                 tableau.move_to_foundation(card)
+                goes_since_moving = 0
+                print
                 print tableau
                 break
             if not foundation and card.rank == 'A':
                 tableau.move_to_foundation(card)
+                goes_since_moving = 0
+                print
                 print tableau
                 break
         else:
-            print "Gave up!"
-            break
+            if tableau.stock:
+                tableau.deal_stock()
+                print
+                print tableau
+            elif goes_since_moving <= max_goes:
+                tableau.replace_stock()
+                print
+                print tableau
+                goes_since_moving += 1
+            else:
+                print "\nGave up!"
+                break
 
 if __name__ == '__main__':
     tab = Tableau(Deck())
     print tab
-    solve(tab)
+    solve(tab, 1)
