@@ -117,7 +117,7 @@ class Tableau(object):
 
     def move_to_foundation(self, card):
         for pile in self.pile:
-            if card == pile[-1]:
+            if pile and card == pile[-1]:
                 del pile[-1]
                 break
         self.foundation[card.suit].append(card)
