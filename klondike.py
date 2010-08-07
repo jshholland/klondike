@@ -111,7 +111,9 @@ class Tableau(object):
 
     def deal_stock(self, num=3):
         for i in range(num):
-            self.avail.append(self.stock.pop())
+            card = self.stock.pop()
+            card.face_up = True
+            self.avail.append(card)
 
     def move_to_foundation(self, card):
         for pile in self.pile:
