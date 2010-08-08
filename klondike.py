@@ -136,20 +136,20 @@ class Tableau(object):
 
 def solve(tableau, max_goes=5):
     goes_since_moving = 0
+    def tidy():
+        goes_since_moving = 0
+        print
+        print tableau
     while True:
         for card in tableau.playable():
             foundation = tableau.foundation[card.suit]
             if foundation and card.follows(foundation[-1]):
                 tableau.move_to_foundation(card)
-                goes_since_moving = 0
-                print
-                print tableau
+                tidy()
                 break
             if not foundation and card.rank == 'A':
                 tableau.move_to_foundation(card)
-                goes_since_moving = 0
-                print
-                print tableau
+                tidy()
                 break
         else:
             if tableau.stock:
