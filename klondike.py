@@ -111,9 +111,12 @@ class Tableau(object):
 
     def deal_stock(self, num=3):
         for i in range(num):
-            card = self.stock.pop()
-            card.face_up = True
-            self.avail.append(card)
+            try:
+                card = self.stock.pop()
+                card.face_up = True
+                self.avail.append(card)
+            except IndexError:
+                pass
 
     def replace_stock(self):
         if self.stock:
@@ -124,7 +127,7 @@ class Tableau(object):
             card.face_up = False
 
     def move_to_foundation(self, card):
-        for pile in self.pile:
+        for pile in self.pile + [self.avail]:
             if pile and card == pile[-1]:
                 del pile[-1]
                 break
