@@ -13,6 +13,13 @@ class Card(object):
         self.suit = suit
         self.face_up = face_up
 
+        blacks = suits[::2]
+        reds = suits[1::2]
+        if self.suit in blacks:
+            self.colour = "B"
+        elif self.suit in reds:
+            self.colour = "R"
+
     def __str__(self):
         if self.face_up:
             return self.rank + self.suit
@@ -32,6 +39,14 @@ class Card(object):
         if self.suit != other.suit:
             return False
         if self.rank_trans[self.rank] - 1 == \
+            other.rank_trans[other.rank]:
+            return True
+        return False
+
+    def can_go_on(self, other):
+        if self.colour == other.colour:
+            return False
+        if self.rank_trans[self.rank] + 1 == \
             other.rank_trans[other.rank]:
             return True
         return False
