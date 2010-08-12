@@ -173,7 +173,7 @@ class Tableau(object):
 
 def solve(tableau, max_goes=5):
     goes_since_moving = 0
-    def tidy():
+    def _tidy():
         goes_since_moving = 0
         print
         print tableau
@@ -182,20 +182,20 @@ def solve(tableau, max_goes=5):
             foundation = tableau.foundation[card.suit]
             if foundation and card.follows(foundation[-1]):
                 tableau.move_to_foundation(card)
-                tidy()
+                _tidy()
                 break
             if not foundation and card.rank == 'A':
                 tableau.move_to_foundation(card)
-                tidy()
+                _tidy()
                 break
             if card.rank == 'K' and not all(tableau.pile):
                 tableau.move_to_empty(card)
-                tidy()
+                _tidy()
                 break
             for other_card in (pile[-1] for pile in tableau.pile if pile):
                 if card.can_go_on(other_card):
                     tableau.move_onto(card, other_card)
-                    tidy()
+                    _tidy()
                     break
         else:
             if tableau.stock:
