@@ -31,26 +31,26 @@ class Card(object):
     def __eq__(self, other):
         return self.suit == other.suit and self.rank == other.rank
 
-    rank_trans = dict((v, i) for (i, v) in enumerate(ranks))
+    _rank_trans = dict((v, i) for (i, v) in enumerate(ranks))
     def __cmp__(self, other):
-        return cmp(self.rank_trans[self.rank],
-                   other.rank_trans[other.rank])
+        return cmp(self._rank_trans[self.rank],
+                   other._rank_trans[other.rank])
 
     def follows(self, other):
         if self < other:
             return False
         if self.suit != other.suit:
             return False
-        if self.rank_trans[self.rank] - 1 == \
-            other.rank_trans[other.rank]:
+        if self._rank_trans[self.rank] - 1 == \
+            other._rank_trans[other.rank]:
             return True
         return False
 
     def can_go_on(self, other):
         if self.colour == other.colour:
             return False
-        if self.rank_trans[self.rank] + 1 == \
-            other.rank_trans[other.rank]:
+        if self._rank_trans[self.rank] + 1 == \
+            other._rank_trans[other.rank]:
             return True
         return False
 
