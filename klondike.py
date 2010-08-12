@@ -165,6 +165,12 @@ class Tableau(object):
                 pile.append(card)
         self.turn_up()
 
+    def move_to_empty(self, card):
+        first_empty = filter(lambda l: not l, self.pile)[0]
+        self._find_and_delete(card)
+        first_empty.append(card)
+        self.turn_up()
+
 def solve(tableau, max_goes=5):
     goes_since_moving = 0
     def tidy():
@@ -182,9 +188,15 @@ def solve(tableau, max_goes=5):
                 tableau.move_to_foundation(card)
                 tidy()
                 break
+            if card.rank == 'K' and not all(tableau.pile):
+                tableau.move_to_empty(card)
+                tidy()
+                break
             for other_card in (pile[-1] for pile in tableau.pile if pile):
                 if card.can_go_on(other_card):
                     tableau.move_onto(card, other_card)
+                    tidy()
+                    break
         else:
             if tableau.stock:
                 tableau.deal_stock()
