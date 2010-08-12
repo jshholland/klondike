@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # A program to simulate the well-known game of Klondike (or Patience, or
-# Solitaire, depending on your nationality
+# Solitaire, depending on your nationality)
 
 import random
 
