@@ -144,15 +144,20 @@ class Tableau(object):
         for card in self.stock:
             card.face_up = False
 
-    def move_to_foundation(self, card):
+    def _find_and_delete(self, card):
         for pile in self.pile + [self.avail]:
             if pile and card == pile[-1]:
                 del pile[-1]
                 break
+
+    def move_to_foundation(self, card):
+        self._find_and_delete(card)
         self.foundation[card.suit].append(card)
         self.turn_up()
 
     def move_onto(self, card, other_card):
+        # Don't use self._find_and_delete so we can find the one we're
+        # moving onto in the same iteration.
         for pile in self.pile + [self.avail]:
             if pile and card == pile[-1]:
                 del pile[-1]
