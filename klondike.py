@@ -28,6 +28,9 @@ class Card(object):
 
     __repr__ = __str__
 
+    def __eq__(self, other):
+        return self.suit == other.suit and self.rank == other.rank
+
     rank_trans = dict((v, i) for (i, v) in enumerate(ranks))
     def __cmp__(self, other):
         return cmp(self.rank_trans[self.rank],
@@ -149,6 +152,14 @@ class Tableau(object):
         self.foundation[card.suit].append(card)
         self.turn_up()
 
+    def move_onto(self, card, other_card):
+        for pile in self.pile + [self.avail]:
+            if pile and card == pile[-1]:
+                del pile[-1]
+            if pile and other_card == pile[-1]:
+                pile.append(card)
+        self.turn_up()
+
 def solve(tableau, max_goes=5):
     goes_since_moving = 0
     def tidy():
@@ -166,6 +177,9 @@ def solve(tableau, max_goes=5):
                 tableau.move_to_foundation(card)
                 tidy()
                 break
+            for other_card in (pile[-1] for pile in tableau.pile if pile):
+                if card.can_go_on(other_card):
+                    tableau.move_onto(card, other_card)
         else:
             if tableau.stock:
                 tableau.deal_stock()
